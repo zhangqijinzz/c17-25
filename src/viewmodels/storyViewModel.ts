@@ -58,6 +58,20 @@ export class StoryViewModel {
 
   setSearch(search: string): void {
     this.setState({ search });
+    const story = this.state.story;
+    const keyword = search.trim().toLowerCase();
+    if (!story || !keyword) return;
+    const collapsedHits = story.scenes.filter(
+      (scene) =>
+        story.collapsedSceneIds.includes(scene.id) &&
+        `${scene.title}${scene.summary}${scene.conflict}`.toLowerCase().includes(keyword),
+    );
+    if (collapsedHits.length === 0) return;
+    const hitIds = new Set(collapsedHits.map((scene) => scene.id));
+    this.updateStory(
+      (current) => ({ ...current, collapsedSceneIds: current.collapsedSceneIds.filter((id) => !hitIds.has(id)) }),
+      false,
+    );
   }
 
   setSection(activeSection: StoryViewState['activeSection']): void {
@@ -123,13 +137,44 @@ export class StoryViewModel {
     }));
   }
 
+  toggleSceneCollapse(sceneId: string): void {
+    this.updateStory((story) => {
+      const collapsed = story.collapsedSceneIds.includes(sceneId);
+      return {
+        ...story,
+        collapsedSceneIds: collapsed
+          ? story.collapsedSceneIds.filter((id) => id !== sceneId)
+          : [...story.collapsedSceneIds, sceneId],
+      };
+    }, false);
+  }
+
+  collapseOtherScenes(exceptSceneId: string): void {
+    this.updateStory(
+      (story) => ({
+        ...story,
+        collapsedSceneIds: story.scenes.map((scene) => scene.id).filter((id) => id !== exceptSceneId),
+      }),
+      false,
+    );
+    this.setState({ notice: '已收起其他场景，专注当前段落' });
+  }
+
+  expandAllScenes(): void {
+    this.updateStory((story) => ({ ...story, collapsedSceneIds: [] }), false);
+  }
+
   moveScene(sceneId: string, direction: 'up' | 'down'): void {
     const scenes = orderedScenes(this.requireStory());
     const index = scenes.findIndex((scene) => scene.id === sceneId);
     const nextIndex = direction === 'up' ? index - 1 : index + 1;
     if (index < 0 || nextIndex < 0 || nextIndex >= scenes.length) return;
     [scenes[index], scenes[nextIndex]] = [scenes[nextIndex], scenes[index]];
-    this.updateStory((story) => ({ ...story, scenes: scenes.map((scene, sceneIndex) => ({ ...scene, order: sceneIndex + 1 })) }));
+    this.updateStory((story) => ({
+      ...story,
+      scenes: scenes.map((scene, sceneIndex) => ({ ...scene, order: sceneIndex + 1 })),
+      collapsedSceneIds: story.collapsedSceneIds.filter((id) => id !== sceneId),
+    }));
     this.setState({ notice: '时间线顺序已更新' });
   }
 

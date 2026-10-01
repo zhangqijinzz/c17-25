@@ -33,6 +33,7 @@ export interface StoryDocument {
   scenes: StoryScene[];
   clues: StoryClue[];
   selectedSceneId: string;
+  collapsedSceneIds: string[];
   updatedAt: string;
 }
 
@@ -92,6 +93,7 @@ export function createStarterStory(): StoryDocument {
       },
     ],
     selectedSceneId: oldHarborId,
+    collapsedSceneIds: [],
     updatedAt: new Date().toISOString(),
   };
 }

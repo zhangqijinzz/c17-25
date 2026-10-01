@@ -63,11 +63,12 @@ button { cursor: pointer; }
 .secondary-button:hover, .create-scene-row button:hover, .clue-form button:hover, .complete-button:hover { filter: brightness(.92); }
 .warning-banner { background: #fbefd9; color: #a36e27; font-size: 11px; border-radius: 5px; padding: 9px 11px; margin-bottom: 13px; }
 .timeline-rail { position: relative; padding: 3px 0 7px; }
+.scene-item { position: relative; }
 .scene-node { display: grid; grid-template-columns: 37px 22px 1fr; text-align: left; position: relative; width: 100%; border: 0; background: none; padding: 0 0 18px; color: var(--ink); }
-.scene-node:last-child { padding-bottom: 1px; }
+.scene-item:last-child .scene-node { padding-bottom: 1px; }
 .scene-index { font: 11px 'DM Mono', monospace; color: #a59b8e; padding-top: 11px; }
 .scene-line { position: absolute; left: 47px; top: 27px; bottom: -5px; border-left: 1px dashed #d8cfc1; }
-.scene-node:last-child .scene-line { display: none; }
+.scene-item:last-child .scene-line { display: none; }
 .scene-dot { z-index: 1; margin-top: 10px; width: 10px; height: 10px; border: 2px solid #c9bdb0; border-radius: 50%; background: var(--paper); }
 .scene-copy { border: 1px solid transparent; border-radius: 7px; padding: 9px 11px 10px; display: grid; gap: 5px; transition: background .15s ease, border .15s ease; }
 .scene-node:hover .scene-copy, .scene-node.selected .scene-copy { border-color: #dfcfc0; background: #fff8ef; }
@@ -78,6 +79,13 @@ button { cursor: pointer; }
 .scene-tags { display: flex; gap: 5px; }
 .scene-tags em, .clue-row em { font-style: normal; font-size: 10px; background: #f1dfd8; color: #a95543; border-radius: 3px; padding: 3px 5px; }
 .scene-tags .clue-tag { background: #e7edf5; color: #62789d; }
+.collapse-toggle { position: absolute; top: 7px; right: 7px; z-index: 2; width: 23px; height: 23px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: #b9b0a4; font-size: 11px; line-height: 1; cursor: pointer; }
+.collapse-toggle:hover { border-color: #dfcfc0; background: #fff8ef; color: var(--ink); }
+.scene-node.collapsed { grid-template-columns: 37px 22px 1fr auto; cursor: pointer; }
+.scene-node.collapsed .scene-copy { border: 1px dashed #d8cfc1; background: #f7f2ea; }
+.scene-node.collapsed:hover .scene-copy { border-color: #c9bdb0; background: #fff8ef; }
+.scene-node.collapsed .scene-dot { border-style: double; }
+.collapse-hint { align-self: start; margin-top: 13px; padding-right: 4px; color: #b9b0a4; font-size: 11px; }
 .create-scene-row, .inline-form, .clue-form { display: flex; gap: 7px; margin-top: 17px; border-top: 1px solid var(--line); padding-top: 16px; }
 input, textarea, select { border: 1px solid var(--line); border-radius: 5px; background: #fffefa; color: var(--ink); outline-color: var(--coral); font-size: 12px; padding: 9px 10px; }
 .create-scene-row input:first-child { width: 27%; }.create-scene-row input:nth-child(2) { flex: 1; }.create-scene-row button { white-space: nowrap; padding: 9px 12px; }

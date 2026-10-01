@@ -22,4 +22,14 @@ describe('story domain rules', () => {
     expect(sanitizeStory({ version: 99 })).toBeNull();
     expect(sanitizeStory(createStarterStory())).not.toBeNull();
   });
+
+  it('defaults collapse state for legacy documents and prunes unknown scene ids', () => {
+    const legacy = createStarterStory() as Partial<ReturnType<typeof createStarterStory>>;
+    delete legacy.collapsedSceneIds;
+    expect(sanitizeStory(legacy)?.collapsedSceneIds).toEqual([]);
+
+    const story = createStarterStory();
+    story.collapsedSceneIds = [story.scenes[0].id, 'scene-ghost'];
+    expect(sanitizeStory(story)?.collapsedSceneIds).toEqual([story.scenes[0].id]);
+  });
 });

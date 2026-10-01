@@ -41,5 +41,11 @@ export function sanitizeStory(input: unknown): StoryDocument | null {
   ) {
     return null;
   }
-  return candidate as StoryDocument;
+  const sceneIds = new Set(
+    candidate.scenes.map((scene) => (scene && typeof scene === 'object' ? (scene as StoryScene).id : '')),
+  );
+  const collapsedSceneIds = (Array.isArray(candidate.collapsedSceneIds) ? candidate.collapsedSceneIds : []).filter(
+    (id): id is string => typeof id === 'string' && sceneIds.has(id),
+  );
+  return { ...(candidate as StoryDocument), collapsedSceneIds };
 }
