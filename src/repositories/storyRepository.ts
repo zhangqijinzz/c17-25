@@ -1,6 +1,6 @@
 import { createStarterStory, type StoryDocument } from '../models/story';
 import { sanitizeStory } from '../models/storyRules';
-import type { StorageService } from '../services/storageService';
+import { DOCUMENT_STORAGE_KEY, type StorageService } from '../services/storageService';
 
 export interface StoryRepository {
   load(): StoryDocument;
@@ -11,7 +11,7 @@ export class LocalStoryRepository implements StoryRepository {
   constructor(private readonly storage: StorageService) {}
 
   load(): StoryDocument {
-    const raw = this.storage.read();
+    const raw = this.storage.read(DOCUMENT_STORAGE_KEY);
     if (!raw) return createStarterStory();
     try {
       return sanitizeStory(JSON.parse(raw)) ?? createStarterStory();
@@ -21,6 +21,6 @@ export class LocalStoryRepository implements StoryRepository {
   }
 
   save(story: StoryDocument): void {
-    this.storage.write(JSON.stringify(story));
+    this.storage.write(DOCUMENT_STORAGE_KEY, JSON.stringify(story));
   }
 }

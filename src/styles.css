@@ -74,10 +74,20 @@ button { cursor: pointer; }
 .scene-node.selected .scene-dot { border-color: var(--coral); background: var(--coral); box-shadow: 0 0 0 4px #f8e6dc; }
 .scene-meta { font: 10px 'DM Mono', monospace; color: var(--coral); letter-spacing: .7px; }
 .scene-copy strong { font-size: 14px; }
-.scene-copy > span:not(.scene-meta) { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.scene-main > span:not(.scene-meta) { color: var(--muted); font-size: 11px; line-height: 1.5; }
 .scene-tags { display: flex; gap: 5px; }
 .scene-tags em, .clue-row em { font-style: normal; font-size: 10px; background: #f1dfd8; color: #a95543; border-radius: 3px; padding: 3px 5px; }
 .scene-tags .clue-tag { background: #e7edf5; color: #62789d; }
+.scene-copy { position: relative; }
+.scene-main, .scene-collapsed-bar { display: grid; gap: 5px; width: 100%; background: none; border: 0; padding: 0; text-align: left; color: inherit; }
+.scene-collapsed-bar { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; }
+.scene-collapsed-bar strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.collapse-toggle { position: absolute; top: 6px; right: 7px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 10px; padding: 3px 6px; }
+.collapse-toggle:hover { background: #f0e7da; color: var(--ink); }
+.scene-node.collapsed { padding-bottom: 10px; }
+.scene-node.collapsed .scene-copy { padding-top: 6px; padding-bottom: 6px; }
+.scene-node.collapsed .scene-copy strong { font-size: 12px; }
+.secondary-button:disabled { opacity: .4; cursor: not-allowed; }
 .create-scene-row, .inline-form, .clue-form { display: flex; gap: 7px; margin-top: 17px; border-top: 1px solid var(--line); padding-top: 16px; }
 input, textarea, select { border: 1px solid var(--line); border-radius: 5px; background: #fffefa; color: var(--ink); outline-color: var(--coral); font-size: 12px; padding: 9px 10px; }
 .create-scene-row input:first-child { width: 27%; }.create-scene-row input:nth-child(2) { flex: 1; }.create-scene-row button { white-space: nowrap; padding: 9px 12px; }

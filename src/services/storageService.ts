@@ -1,28 +1,28 @@
-const STORAGE_KEY = 'story-architect.document.v1';
+export const DOCUMENT_STORAGE_KEY = 'story-architect.document.v1';
 
 export interface StorageService {
-  read(): string | null;
-  write(value: string): void;
+  read(key: string): string | null;
+  write(key: string, value: string): void;
 }
 
 export class BrowserStorageService implements StorageService {
-  read(): string | null {
-    return window.localStorage.getItem(STORAGE_KEY);
+  read(key: string): string | null {
+    return window.localStorage.getItem(key);
   }
 
-  write(value: string): void {
-    window.localStorage.setItem(STORAGE_KEY, value);
+  write(key: string, value: string): void {
+    window.localStorage.setItem(key, value);
   }
 }
 
 export class MemoryStorageService implements StorageService {
-  private value: string | null = null;
+  private readonly values = new Map<string, string>();
 
-  read(): string | null {
-    return this.value;
+  read(key: string): string | null {
+    return this.values.get(key) ?? null;
   }
 
-  write(value: string): void {
-    this.value = value;
+  write(key: string, value: string): void {
+    this.values.set(key, value);
   }
 }
